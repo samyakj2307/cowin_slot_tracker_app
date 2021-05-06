@@ -2,15 +2,21 @@ package com.samyak.cowin_tracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
@@ -21,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference mUsersDatabaseReference;
 
     private FloatingActionButton addPincodeButton;
     private PopupWindow popupWindow;
     private Context context;
+    private RelativeLayout mainLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +60,11 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+        mUsersDatabaseReference = mFirebaseDatabase.getReference().child("users");
+
         addPincodeButton = findViewById(R.id.addPincode);
+
+        mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -64,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 if (firebaseUser != null) {
                     OnSignedInInitialize(firebaseUser.getDisplayName());
                 } else {
-                    OnSignedoutCleanup();
+                    OnSignedOutCleanup();
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -77,25 +89,27 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-//        addPincodeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-//
-//                View popUpView = inflater.inflate(R.layout.pincode_pop_up,null);
-//
-//                popupWindow = new PopupWindow(
-//                        popUpView,
-//                        ActionBar.LayoutParams.WRAP_CONTENT,
-//                        ActionBar.LayoutParams.WRAP_CONTENT
-//                );
-//
-//                if(Build.VERSION.SDK_INT>=21){
-//                    popupWindow.setElevation(5.0f);
-//                }
-//
-//            }
-//        });
+        addPincodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+                View popUpView = inflater.inflate(R.layout.pincode_pop_up, null);
+
+                popupWindow = new PopupWindow(
+                        popUpView,
+                        ActionBar.LayoutParams.WRAP_CONTENT,
+                        ActionBar.LayoutParams.WRAP_CONTENT
+                );
+
+                if (Build.VERSION.SDK_INT >= 21) {
+                    popupWindow.setElevation(5.0f);
+                }
+
+                popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
+            }
+        });
     }
 
     @Override
@@ -126,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(MainActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                String userId = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
+                String phoneNumber = mFirebaseAuth.getCurrentUser().getPhoneNumber();
+                mUsersDatabaseReference.child(userId).child("Phone Number").setValue(phoneNumber);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(MainActivity.this, "Sign in Cancelled", Toast.LENGTH_SHORT).show();
                 finish();
@@ -152,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         mUsername = username;
     }
 
-    private void OnSignedoutCleanup() {
+    private void OnSignedOutCleanup() {
         mUsername = ANONYMOUS;
     }
 
