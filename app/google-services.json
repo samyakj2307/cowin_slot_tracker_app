@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "781366305325",
+    "firebase_url": "https://cowin-tracker-ff4c1-default-rtdb.firebaseio.com",
+    "project_id": "cowin-tracker-ff4c1",
+    "storage_bucket": "cowin-tracker-ff4c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781366305325:android:8edc99084c49cd8640cea4",
+        "android_client_info": {
+          "package_name": "com.samyak.cowin_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781366305325-mufjvki4undr2ton774bkmcgvqgunr6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.samyak.cowin_tracker",
+            "certificate_hash": "5c27c8298a3e6d6ce1ba731ab23207552e5654a7"
+          }
+        },
+        {
+          "client_id": "781366305325-kil2ufoak00hu1iuak00th5e43ovp0g0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwjgOOT2Ok3-f57G-a-L409vgvtTJOw38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781366305325-kil2ufoak00hu1iuak00th5e43ovp0g0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
