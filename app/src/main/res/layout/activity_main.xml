@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_layout"
     tools:context=".MainActivity">
 
@@ -22,7 +23,10 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:clickable="true"
-        android:contentDescription="Add Pincode" />
+        android:contentDescription="Add Pincode"
+        android:focusable="true"
+        app:fabSize="auto"
+        app:srcCompat="@drawable/plus_icon" />
 
     <!--    app:srcCompat="@drawable/my_floating_button"-->
 
