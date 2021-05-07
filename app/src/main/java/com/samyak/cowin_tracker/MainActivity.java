@@ -3,6 +3,7 @@ package com.samyak.cowin_tracker;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,11 +24,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private String mUsername;
+    private String firebaseMessagingAccessToken;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -69,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         addPincodeFloatingButton = findViewById(R.id.addPincode);
 
-        mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
+        mainLayout = findViewById(R.id.main_layout);
 
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -128,20 +133,26 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Please Select a Slot to Track", Toast.LENGTH_SHORT).show();
                         } else {
                             String userId = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
-                            RadioButton radioButton = (RadioButton) popUpView.findViewById(selected_radio_button_id);
+                            RadioButton radioButton = popUpView.findViewById(selected_radio_button_id);
                             String radioText = radioButton.getText().toString();
 
                             switch (radioText) {
                                 case "18+ Slots":
-                                    mTrackPincodesDatabaseReference.child(pincode).child("is_18_plus").child(userId).setValue(userId);
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_18_plus").child(userId).setValue(firebaseMessagingAccessToken);
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_45_plus").child(userId).removeValue();
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_all").child(userId).removeValue();
                                     mUsersDatabaseReference.child(userId).child(pincode).setValue("is_18_plus");
                                     break;
                                 case "45+ Slots":
-                                    mTrackPincodesDatabaseReference.child(pincode).child("is_45_plus").child(userId).setValue(userId);
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_45_plus").child(userId).setValue(firebaseMessagingAccessToken);
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_18_plus").child(userId).removeValue();
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_all").child(userId).removeValue();
                                     mUsersDatabaseReference.child(userId).child(pincode).setValue("is_45_plus");
                                     break;
                                 case "Both":
-                                    mTrackPincodesDatabaseReference.child(pincode).child("is_all").child(userId).setValue(userId);
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_all").child(userId).setValue(firebaseMessagingAccessToken);
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_18_plus").child(userId).removeValue();
+                                    mTrackPincodesDatabaseReference.child(pincode).child("is_45_plus").child(userId).removeValue();
                                     mUsersDatabaseReference.child(userId).child(pincode).setValue("is_all");
                                     break;
                             }
@@ -218,10 +229,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void OnSignedInInitialize(String username) {
         mUsername = username;
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                firebaseMessagingAccessToken = task.getResult();
+            }
+        });
     }
 
     private void OnSignedOutCleanup() {
         mUsername = ANONYMOUS;
+        firebaseMessagingAccessToken = "";
     }
 
 }
