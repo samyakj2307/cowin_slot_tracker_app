@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 popupWindow = new PopupWindow(popUpView);
-                popupWindow.setWidth(RelativeLayout.LayoutParams.WRAP_CONTENT);
-                popupWindow.setHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
+                popupWindow.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
+                popupWindow.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
 
                 popupWindow.setElevation(5.0f);
 
@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                             String userId = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
                             RadioButton radioButton = popUpView.findViewById(selected_radio_button_id);
                             String radioText = radioButton.getText().toString();
+
+                            //TODO change access tokens of a userid whenever a user reinstalls the app
 
                             switch (radioText) {
                                 case "18+ Slots":
@@ -168,10 +170,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
-                popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
                 popupWindow.setFocusable(true);
                 popupWindow.update();
+                popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
 
             }
         });

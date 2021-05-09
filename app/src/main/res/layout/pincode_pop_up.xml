@@ -1,94 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/closePopupButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="6dp"
-        android:background="@color/white"
-        android:src="@drawable/close_popup"
-        android:visibility="visible" />
+    <View
+        android:id="@+id/opacityFilter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.3"
+        android:background="@android:color/black"></View>
 
-    <TextView
-        android:id="@+id/pincodesHeading"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/closePopupButton"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_margin="12dp"
-        android:text="Add Pincode to Track"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:background="@drawable/pop_up_drawable">
 
-
-    <EditText
-        android:id="@+id/pincodeInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pincodesHeading"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="12dp"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="6" />
-
-
-    <TextView
-        android:id="@+id/slotHeading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pincodeInput"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="12dp"
-        android:text="Which Slots to Track"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/slotHeading"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/track18plus"
+        <ImageButton
+            android:id="@+id/closePopupButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="18+ Slots" />
+            android:layout_alignParentEnd="true"
+            android:background="@color/white"
+            android:src="@drawable/close_popup"
+            android:visibility="visible" />
 
-        <RadioButton
-            android:id="@+id/track45plus"
+        <TextView
+            android:id="@+id/pincodesHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="45+ Slots" />
+            android:layout_below="@id/closePopupButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:text="Add Pincode to Track"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
-        <RadioButton
-            android:id="@+id/trackall"
+
+        <EditText
+            android:id="@+id/pincodeInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Both" />
+            android:layout_below="@id/pincodesHeading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/black"
+            android:cursorVisible="true"
+            android:ems="10"
+            android:hint="Enter Pincode"
+            android:inputType="number"
+            android:maxLength="6"
+            android:padding="8dp" />
 
-    </RadioGroup>
+
+        <TextView
+            android:id="@+id/slotHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pincodeInput"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:text="Which Slots to Track?"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/slotHeading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/track18plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="18+ Slots" />
+
+            <RadioButton
+                android:id="@+id/track45plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="45+ Slots" />
+
+            <RadioButton
+                android:id="@+id/trackall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:text="Both" />
+
+        </RadioGroup>
 
 
-    <Button
-        android:id="@+id/addPincodeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/radioGroup"
-        android:layout_alignParentEnd="true"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="24dp"
-        android:text="Add Pincode" />
+        <Button
+            android:id="@+id/addPincodeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radioGroup"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="12dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/add_pincode_button_drawable"
+            android:text="Add Pincode"
+            android:textColor="@color/white" />
 
+
+    </RelativeLayout>
 
 </RelativeLayout>
