@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:alpha="0.3"
-        android:background="@android:color/black"></View>
+        android:background="@android:color/black" />
 
     <RelativeLayout
         android:layout_width="match_parent"

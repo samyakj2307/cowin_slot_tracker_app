@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Cowin Slot Tracker</string>
+
+    <string name="string_all_slots_available">All</string>
+    <string name="string_18_plus_slots_available">18+</string>
+    <string name="string_45_plus_slots_available">45+</string>
+
+    <string name="string_slot_available">Slot Available</string>
+    <string name="string_slot_unavailable">Slot Unavailable</string>
+    <string name="status">Status: </string>
 </resources>
