@@ -13,9 +13,13 @@ import java.util.ArrayList;
 
 public class PincodeDataAdapter extends RecyclerView.Adapter<PincodeDataAdapter.PincodeDataViewHolder> {
 
+    private final PincodeDataRecyclerAdapterOnClickHandler mClickHandler;
     Context context;
-
     private ArrayList<PincodeData> pincodeData = new ArrayList<PincodeData>();
+
+    public PincodeDataAdapter(PincodeDataRecyclerAdapterOnClickHandler mClickHandler) {
+        this.mClickHandler = mClickHandler;
+    }
 
 
     @NonNull
@@ -45,7 +49,11 @@ public class PincodeDataAdapter extends RecyclerView.Adapter<PincodeDataAdapter.
         notifyDataSetChanged();
     }
 
-    public class PincodeDataViewHolder extends RecyclerView.ViewHolder {
+    public interface PincodeDataRecyclerAdapterOnClickHandler {
+        void OnClick(String pincode);
+    }
+
+    public class PincodeDataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView pincode_text;
         TextView slot_tracking_text;
 
@@ -54,6 +62,8 @@ public class PincodeDataAdapter extends RecyclerView.Adapter<PincodeDataAdapter.
 
             pincode_text = itemView.findViewById(R.id.pincode_text);
             slot_tracking_text = itemView.findViewById(R.id.tracking_slot_text);
+
+            itemView.setOnClickListener(this);
         }
 
         public TextView getPincode_text() {
@@ -64,5 +74,11 @@ public class PincodeDataAdapter extends RecyclerView.Adapter<PincodeDataAdapter.
             return slot_tracking_text;
         }
 
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            String pincode = pincodeData.get(position).getPincode();
+            mClickHandler.OnClick(pincode);
+        }
     }
 }

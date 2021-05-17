@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_layout"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/no_pincodeText_removable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Hello There"
-        android:textSize="30sp" />
+        android:text="@string/no_pincodes_added_to_track"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pincodeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/add_pincodeText_removable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="20dp"
+        android:layout_toStartOf="@+id/addPincode"
+        android:text="Press here to\nAdd Pincode"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,14 +40,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_marginVertical="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/black"
         android:clickable="true"
-        android:contentDescription="Add Pincode"
+        android:contentDescription="@string/add_pincode"
         android:focusable="true"
         app:fabSize="auto"
         app:srcCompat="@drawable/plus_icon" />
-
-    <!--    app:srcCompat="@drawable/my_floating_button"-->
 
 
 </RelativeLayout>

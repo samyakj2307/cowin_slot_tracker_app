@@ -2,6 +2,7 @@ package com.samyak.cowin_tracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -41,10 +43,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PincodeDataAdapter.PincodeDataRecyclerAdapterOnClickHandler {
 
     public static final String ANONYMOUS = "anonymous";
     public static final int RC_SIGN_IN = 1;
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         pincodeRecyclerView.setLayoutManager(layoutManager);
         pincodeRecyclerView.setHasFixedSize(true);
-        pincodeDataAdapter = new PincodeDataAdapter();
+        pincodeDataAdapter = new PincodeDataAdapter(this);
         pincodeDataAdapter.setPincodeData(new ArrayList<PincodeData>());
         pincodeRecyclerView.setAdapter(pincodeDataAdapter);
 
@@ -118,8 +120,10 @@ public class MainActivity extends AppCompatActivity {
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(Collections.singletonList(
-                                            new AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IN").build()))
+                                    .setAvailableProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IN").build(),
+                                            new AuthUI.IdpConfig.GoogleBuilder().build()
+                                    ))
                                     .build(),
                             RC_SIGN_IN);
                 }
@@ -186,6 +190,17 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                             }
                             popupWindow.dismiss();
+                            Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            String text = "You will be notified as soon as Slot is available";
+                            View main = findViewById(R.id.main_layout);
+                            Snackbar.make(main, text, Snackbar.LENGTH_INDEFINITE).setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    finish();
+                                }
+                            }).setActionTextColor(Color.parseColor("#445CD9"))
+
+                                    .show();
                         }
                     }
                 });
@@ -232,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
                 String userId = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
                 String phoneNumber = mFirebaseAuth.getCurrentUser().getPhoneNumber();
-                mUsersDatabaseReference.child(userId).child("Phone Number").setValue(phoneNumber);
+//                mUsersDatabaseReference.child(userId).child("Phone Number").setValue(phoneNumber);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(MainActivity.this, "Sign in Cancelled", Toast.LENGTH_SHORT).show();
                 finish();
@@ -246,62 +261,13 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
 
         if (getIntent().getExtras() != null) {
-            String date = getIntent().getExtras().get("date").toString();
-            String pincode = getIntent().getExtras().get("pincode").toString();
-            String slottype = getIntent().getExtras().get("slot_type").toString();
-
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            View popUpView = inflater.inflate(R.layout.notification_popup, null);
-
-
-            popupWindow = new PopupWindow(popUpView);
-            popupWindow.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
-            popupWindow.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
-
-            popupWindow.setElevation(5.0f);
-
-            ImageButton closePopUpImageButton = popUpView.findViewById(R.id.closeNotificationPopupButton);
-
-            Button bookSlotButton = popUpView.findViewById(R.id.book_slot_button);
-
-            TextView slottypeicon_text_view = popUpView.findViewById(R.id.notification_tracking_slot_text);
-            TextView pincode_text_view = popUpView.findViewById(R.id.notification_pincode_text);
-            TextView date_text_view = popUpView.findViewById(R.id.on_date_available_text);
-            TextView slottype_text_view = popUpView.findViewById(R.id.slot_type_available_text);
-
-            pincode_text_view.setText(pincode);
-            date_text_view.setText(date);
-            slottype_text_view.setText(slottype);
-            slottypeicon_text_view.setText(slottype);
-
-            bookSlotButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Uri cowinWebsite = Uri.parse("https://selfregistration.cowin.gov.in/");
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, cowinWebsite);
-                    startActivity(browserIntent);
-                }
-            });
-
-
-            closePopUpImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupWindow.dismiss();
-                }
-            });
-
-
-            popupWindow.setFocusable(true);
-            popupWindow.update();
-            findViewById(R.id.main_layout).post(new Runnable() {
-                public void run() {
-                    popupWindow.showAtLocation(findViewById(R.id.main_layout), Gravity.CENTER, 0, 0);
-                }
-            });
-
-            Log.d(TAG, date + pincode + slottype);
+            if (getIntent().getExtras().get("date") != null) {
+                String date = getIntent().getExtras().get("date").toString();
+                String pincode = getIntent().getExtras().get("pincode").toString();
+                String slottype = getIntent().getExtras().get("slot_type").toString();
+                makeNotificationPopUp(date, pincode, slottype);
+                Log.d(TAG, date + pincode + slottype);
+            }
         }
     }
 
@@ -417,6 +383,64 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public void makeNotificationPopUp(String date, String pincode, String slottype) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popUpView = inflater.inflate(R.layout.notification_popup, null);
+
+
+        popupWindow = new PopupWindow(popUpView);
+        popupWindow.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
+
+        popupWindow.setElevation(5.0f);
+
+        ImageButton closePopUpImageButton = popUpView.findViewById(R.id.closeNotificationPopupButton);
+
+        Button bookSlotButton = popUpView.findViewById(R.id.book_slot_button);
+
+        TextView slottypeicon_text_view = popUpView.findViewById(R.id.notification_tracking_slot_text);
+        TextView pincode_text_view = popUpView.findViewById(R.id.notification_pincode_text);
+        TextView date_text_view = popUpView.findViewById(R.id.on_date_available_text);
+        TextView slottype_text_view = popUpView.findViewById(R.id.slot_type_available_text);
+
+        pincode_text_view.setText(pincode);
+        date_text_view.setText(date);
+        slottype_text_view.setText(slottype);
+        slottypeicon_text_view.setText(slottype);
+
+        bookSlotButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri cowinWebsite = Uri.parse("https://selfregistration.cowin.gov.in/");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, cowinWebsite);
+                startActivity(browserIntent);
+                popupWindow.dismiss();
+
+            }
+        });
+
+
+        closePopUpImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+
+        popupWindow.setFocusable(true);
+        popupWindow.update();
+        findViewById(R.id.main_layout).post(new Runnable() {
+            public void run() {
+                popupWindow.showAtLocation(findViewById(R.id.main_layout), Gravity.CENTER, 0, 0);
+            }
+        });
+
+    }
+
     private void OnSignedInInitialize(String username) {
         mUsername = username;
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
@@ -439,4 +463,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void OnClick(String pincode) {
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popUpView = inflater.inflate(R.layout.remove_pincode_popup, null);
+
+
+        popupWindow = new PopupWindow(popUpView);
+        popupWindow.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
+
+        popupWindow.setElevation(5.0f);
+
+        ImageButton closePopUpImageButton = popUpView.findViewById(R.id.closeRemovePopUpPopupButton);
+
+        Button removePincodeButton = popUpView.findViewById(R.id.remove_pincode_button);
+
+        TextView pincode_text_view = popUpView.findViewById(R.id.stop_pincode_number);
+
+        pincode_text_view.setText(pincode);
+
+        String userId = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
+
+        removePincodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTrackPincodesDatabaseReference.child(pincode).child("users").child("is_18_plus").child(userId).removeValue();
+                mTrackPincodesDatabaseReference.child(pincode).child("users").child("is_45_plus").child(userId).removeValue();
+                mTrackPincodesDatabaseReference.child(pincode).child("users").child("is_all").child(userId).removeValue();
+                mUsersDatabaseReference.child(userId).child("Pincodes").child(pincode).removeValue();
+
+                popupWindow.dismiss();
+
+            }
+        });
+
+
+        closePopUpImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+
+        popupWindow.setFocusable(true);
+        popupWindow.update();
+        popupWindow.showAtLocation(findViewById(R.id.main_layout), Gravity.CENTER, 0, 0);
+
+    }
 }

@@ -8,4 +8,15 @@
     <string name="string_slot_available">Slot Available</string>
     <string name="string_slot_unavailable">Slot Unavailable</string>
     <string name="status">Status: </string>
+    <string name="no_pincodes_added_to_track">No Pincodes Added to track</string>
+    <string name="add_pincode">Add Pincode</string>
+    <string name="add_pincode_to_track">Add Pincode to Track</string>
+    <string name="enter_pincode">Enter Pincode</string>
+    <string name="which_slots_to_track">Which Slots to Track?</string>
+    <string name="_18_slots">18+ Slots</string>
+    <string name="_45_slots">45+ Slots</string>
+    <string name="both">Both</string>
+    <string name="close_popup">Close PopUp</string>
+    <string name="stop_tracking_pincode">Stop Tracking Pincode</string>
+    <string name="remove_pincode">Remove Pincode</string>
 </resources>
