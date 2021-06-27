@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/centerListFragment">
+
+
+    <fragment
+        android:id="@+id/centerListFragment"
+        android:name="com.samyak.retrofitapp.presentation.ui.center_list.CenterListFragment"
+        android:label="CenterListFragment">
+        <action
+            android:id="@+id/viewCenter"
+            app:destination="@id/centerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/centerFragment"
+        android:name="com.samyak.retrofitapp.presentation.ui.center.CenterFragment"
+        android:label="CenterFragment" />
+</navigation>
