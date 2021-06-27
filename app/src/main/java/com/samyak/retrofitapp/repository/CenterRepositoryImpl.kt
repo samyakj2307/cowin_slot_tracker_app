@@ -4,7 +4,7 @@ import com.samyak.retrofitapp.domain.model.Center
 import com.samyak.retrofitapp.network.CenterService
 import com.samyak.retrofitapp.network.model.CenterDtoMapper
 
-class CenterRepository_Impl(
+class CenterRepositoryImpl(
     private val centerService: CenterService,
     private val mapper: CenterDtoMapper
 ) : CenterRepository {
