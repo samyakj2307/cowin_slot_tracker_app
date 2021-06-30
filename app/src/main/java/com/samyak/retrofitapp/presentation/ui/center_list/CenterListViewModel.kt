@@ -19,17 +19,37 @@ constructor(
 
     val centers: MutableState<List<Center>> = mutableStateOf(listOf())
 
-    init {
-        newSearch()
-    }
+    val query = mutableStateOf("")
+    val isSearchEnabled = mutableStateOf(false)
+    val isError = mutableStateOf(false)
 
-    fun newSearch(){
+    val index = mutableStateOf(-1)
+
+//    init {
+//        //TODO change this default Value
+//        newSearch("452001")
+//    }
+
+    fun newSearch(query: String) {
         viewModelScope.launch {
             val result = repository.getCenters(
-                pincode = "452001",
+                pincode = query,
                 date = "28-6-21"
             )
             centers.value = result
         }
+    }
+
+    fun onQueryChanged(query: String) {
+        this.query.value = query
+        this.isSearchEnabled.value = query.length == 6
+    }
+
+    fun getCurrentCenter(): Center {
+        return centers.value[index.value]
+    }
+
+    fun setCurrentIndex(index: Int) {
+        this.index.value = index
     }
 }

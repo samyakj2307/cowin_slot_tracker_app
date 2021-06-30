@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.samyak.retrofitapp.presentation.ui.center_list.CenterListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CenterFragment : Fragment() {
+
+    private val viewModel: CenterListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,7 +23,9 @@ class CenterFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                Text("Hello Center Fragment")
+
+                val currentCenter = viewModel.getCurrentCenter()
+                Text("Hello Center Fragment ${currentCenter.name}")
             }
         }
     }
