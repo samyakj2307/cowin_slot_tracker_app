@@ -74,6 +74,9 @@ class SessionDto(
     @SerializedName("min_age_limit")
     val min_age_limit: Int? = 0,
 
+    @SerializedName("max_age_limit")
+    val max_age_limit: Int? = 0,
+
     @SerializedName("vaccine")
     val vaccine: String? = null,
 

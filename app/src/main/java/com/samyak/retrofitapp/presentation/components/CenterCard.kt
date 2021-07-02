@@ -1,5 +1,6 @@
 package com.samyak.retrofitapp.presentation.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,20 +26,18 @@ fun CenterCard(
     Card(
         shape = RoundedCornerShape(14.dp),
         modifier = Modifier
-            .padding(
-                bottom = 6.dp,
-                top = 6.dp,
-            )
+            .padding(top = 4.dp, bottom = 4.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick),
         elevation = 8.dp,
+        border = BorderStroke(1.dp, Color.LightGray)
     ) {
-        Column {
+        Column(modifier = Modifier.padding(8.dp)) {
             center.name?.let { name ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 12.dp, bottom = 6.dp, start = 8.dp, end = 8.dp)
+                        .padding(top = 12.dp, bottom = 6.dp)
                 ) {
                     Text(
                         text = name,
@@ -46,10 +45,10 @@ fun CenterCard(
                             .fillMaxWidth(0.85f)
                             .wrapContentWidth(Alignment.Start),
                         style = TextStyle(
-                            color = Color.Black,
+                            color = Color(android.graphics.Color.parseColor("#002060")),
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Black,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
                         )
                     )
                 }
@@ -58,7 +57,6 @@ fun CenterCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 8.dp, end = 8.dp)
                 ) {
                     Text(
                         text = address,
@@ -68,7 +66,7 @@ fun CenterCard(
                         style = TextStyle(
                             color = Color.Gray,
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 18.sp,
+                            fontSize = 16.sp,
                         )
                     )
                 }
@@ -78,44 +76,23 @@ fun CenterCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 8.dp, end = 8.dp)
-                ) {
-                    Text(
-                        text = district_name,
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .wrapContentWidth(Alignment.Start),
-                        style = TextStyle(
-                            color = Color.Gray,
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 18.sp,
-                        )
-                    )
-                }
-            }
-            center.block_name?.let { block_name ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                        .padding(bottom = 8.dp)
                 ) {
                     center.state_name?.let { state_name ->
                         Text(
-                            text = "$block_name, $state_name",
+                            text = "$district_name, $state_name",
                             modifier = Modifier
                                 .fillMaxWidth(0.85f)
                                 .wrapContentWidth(Alignment.Start),
                             style = TextStyle(
                                 color = Color.Gray,
                                 fontFamily = FontFamily.SansSerif,
-                                fontSize = 18.sp,
+                                fontSize = 16.sp,
                             )
                         )
                     }
                 }
             }
-
-
         }
     }
 }
@@ -123,7 +100,7 @@ fun CenterCard(
 
 @Preview
 @Composable
-fun PreviewFunc() {
+fun CenterCardPreview() {
     return CenterCard(
         center = Center(
             name = "Child Care Hospital",

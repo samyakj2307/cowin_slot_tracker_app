@@ -1,5 +1,7 @@
 package com.samyak.retrofitapp.network.model
 
+import android.util.Log
+import com.samyak.retrofitapp.TAG
 import com.samyak.retrofitapp.domain.model.Center
 import com.samyak.retrofitapp.domain.model.Session
 import com.samyak.retrofitapp.domain.model.VaccineFee
@@ -50,6 +52,7 @@ class CenterDtoMapper : DomainMapper<CenterDto, Center> {
             date = t.date,
             available_capacity = t.available_capacity,
             min_age_limit = t.min_age_limit,
+            max_age_limit = t.max_age_limit,
             vaccine = t.vaccine,
             slots = t.slots,
             available_capacity_dose1 = t.available_capacity_dose1,

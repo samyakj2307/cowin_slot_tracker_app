@@ -35,6 +35,7 @@ data class Session(
     val date: String? = null,
     val available_capacity: Long? = 0,
     val min_age_limit: Int? = 0,
+    val max_age_limit: Int? = 0,
     val vaccine: String? = null,
     val slots: List<String>? = listOf(),
     val available_capacity_dose1: Long? = 0,

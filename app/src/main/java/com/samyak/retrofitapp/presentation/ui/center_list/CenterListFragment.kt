@@ -1,6 +1,7 @@
 package com.samyak.retrofitapp.presentation.ui.center_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.samyak.retrofitapp.R
+import com.samyak.retrofitapp.TAG
+import com.samyak.retrofitapp.domain.model.Center
 import com.samyak.retrofitapp.presentation.components.CenterCard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +39,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class CenterListFragment : Fragment() {
 
     private val viewModel: CenterListViewModel by activityViewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreateCenterListFragment: $viewModel")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,7 +110,7 @@ class CenterListFragment : Fragment() {
                             )
                         }
                     }
-                    BottomListView()
+                    BottomListView(centers = centers)
                 }
 
             }
@@ -111,8 +118,7 @@ class CenterListFragment : Fragment() {
     }
 
     @Composable
-    fun BottomListView() {
-        val centers = viewModel.centers.value
+    fun BottomListView(centers: List<Center>) {
         if (centers.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier
