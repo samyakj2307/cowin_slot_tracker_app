@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/centerListFragment"
-        android:name="com.samyak.retrofitapp.presentation.ui.center_list.CenterListFragment"
+        android:name="com.samyak.cowin_tracker.presentation.ui.center_list.CenterListFragment"
         android:label="CenterListFragment">
         <action
             android:id="@+id/viewCenter"
@@ -16,6 +16,10 @@
 
     <fragment
         android:id="@+id/centerFragment"
-        android:name="com.samyak.retrofitapp.presentation.ui.center.CenterFragment"
+        android:name="com.samyak.cowin_tracker.presentation.ui.center.CenterFragment"
         android:label="CenterFragment" />
+    <fragment
+        android:id="@+id/pincodeListFragment"
+        android:name="com.samyak.cowin_tracker.presentation.ui.pincode_list.PincodeListFragment"
+        android:label="PincodeListFragment" />
 </navigation>
