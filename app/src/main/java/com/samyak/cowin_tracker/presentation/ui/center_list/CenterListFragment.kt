@@ -53,7 +53,7 @@ class CenterListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Scaffold(
-                    bottomBar = { BottomNavigationBar() },
+                    bottomBar = { BottomNavigationBar(findNavController()) },
                     modifier = Modifier.fillMaxHeight(),
                 ) {
 

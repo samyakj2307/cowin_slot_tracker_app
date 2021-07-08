@@ -8,10 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.samyak.cowin_tracker.presentation.components.navigation.NavigationItem
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
         NavigationItem.Search,
         NavigationItem.Tracking
@@ -21,6 +22,8 @@ fun BottomNavigationBar() {
         backgroundColor = Color.White,
         elevation = 8.dp
     ) {
+
+        val currentRouteId = navController.currentDestination?.id
         items.forEach { item ->
             BottomNavigationItem(
                 icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
@@ -28,15 +31,15 @@ fun BottomNavigationBar() {
                 selectedContentColor = Color.Blue,
                 unselectedContentColor = Color.Black,
                 alwaysShowLabel = true,
-                selected = false,
-                onClick = { /*TODO*/ })
+                selected = currentRouteId==item.routeTo,
+                onClick = {
+                    navController.currentDestination?.let {
+                        if (it.id != item.routeTo) {
+                            navController.navigate(item.routeTo)
+                        }
+                    }
+                })
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomNavigationBarPreview() {
-    BottomNavigationBar()
 }

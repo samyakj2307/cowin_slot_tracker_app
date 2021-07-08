@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import com.samyak.cowin_tracker.TAG
 import com.samyak.cowin_tracker.domain.model.Center
 import com.samyak.cowin_tracker.domain.model.Session
@@ -52,13 +53,13 @@ class CenterFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Scaffold(
-                    bottomBar = { BottomNavigationBar() }
+                    bottomBar = { BottomNavigationBar(findNavController()) }
                 ) {
                     val currentCenter = viewModel.getCurrentCenter()
                     val sessions = currentCenter.sessions
 
                     Column(
-                        modifier = Modifier.padding(it.calculateBottomPadding())
+                        modifier = Modifier.padding(bottom = it.calculateBottomPadding())
                     ) {
 
                         CenterInfoSection(center = currentCenter)

@@ -4,6 +4,14 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/centerListFragment">
 
+    <action
+        android:id="@+id/search"
+        app:destination="@id/centerListFragment" />
+
+    <action
+        android:id="@+id/track"
+        app:destination="@id/pincodeListFragment" />
+
 
     <fragment
         android:id="@+id/centerListFragment"
