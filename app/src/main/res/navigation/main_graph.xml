@@ -6,12 +6,11 @@
 
     <action
         android:id="@+id/search"
-        app:destination="@id/centerListFragment" />
+        app:destination="@+id/centerListFragment" />
 
     <action
         android:id="@+id/track"
-        app:destination="@id/pincodeListFragment" />
-
+        app:destination="@+id/pincodeListFragment" />
 
     <fragment
         android:id="@+id/centerListFragment"

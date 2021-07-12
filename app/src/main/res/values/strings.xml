@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Cowin Slot Tracker</string>
+    <string name="search">Search</string>
+    <string name="track">Track</string>
 </resources>

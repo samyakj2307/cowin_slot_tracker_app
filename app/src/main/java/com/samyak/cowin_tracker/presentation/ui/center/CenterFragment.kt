@@ -30,7 +30,7 @@ import androidx.navigation.findNavController
 import com.samyak.cowin_tracker.TAG
 import com.samyak.cowin_tracker.domain.model.Center
 import com.samyak.cowin_tracker.domain.model.Session
-import com.samyak.cowin_tracker.presentation.components.BottomNavigationBar
+import com.samyak.cowin_tracker.presentation.components.navigation.BottomNavigationBar
 import com.samyak.cowin_tracker.presentation.components.SessionCard
 import com.samyak.cowin_tracker.presentation.ui.center_list.CenterListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +53,7 @@ class CenterFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Scaffold(
-                    bottomBar = { BottomNavigationBar(findNavController()) }
+//                    bottomBar = { BottomNavigationBar(findNavController()) }
                 ) {
                     val currentCenter = viewModel.getCurrentCenter()
                     val sessions = currentCenter.sessions

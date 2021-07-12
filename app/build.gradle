@@ -6,6 +6,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdk 30
     buildToolsVersion "30.0.3"
@@ -106,6 +108,16 @@ android {
 
             //Lower Version Library Desugaring
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+            //Firebase
+            implementation platform('com.google.firebase:firebase-bom:27.1.0')
+            implementation 'com.google.firebase:firebase-analytics-ktx'
+            implementation 'com.google.firebase:firebase-auth-ktx'
+            implementation 'com.google.firebase:firebase-database-ktx'
+            implementation 'com.google.firebase:firebase-messaging-ktx'
+            implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+
 
         }
     }

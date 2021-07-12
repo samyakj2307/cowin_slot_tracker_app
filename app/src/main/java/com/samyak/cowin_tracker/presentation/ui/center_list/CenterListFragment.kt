@@ -1,10 +1,10 @@
 package com.samyak.cowin_tracker.presentation.ui.center_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -28,11 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.samyak.cowin_tracker.R
-import com.samyak.cowin_tracker.TAG
 import com.samyak.cowin_tracker.domain.model.Center
-import com.samyak.cowin_tracker.presentation.components.BottomNavigationBar
 import com.samyak.cowin_tracker.presentation.components.CenterCard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,10 +39,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CenterListFragment : Fragment() {
 
     private val viewModel: CenterListViewModel by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreateCenterListFragment: $viewModel")
-    }
+//    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +48,16 @@ class CenterListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+                BackHandler(onBack = {
+                    findNavController().popBackStack(
+                        findNavController().graph.startDestinationId,
+                        false
+                    )
+                    activity?.finish()
+                })
                 Scaffold(
-                    bottomBar = { BottomNavigationBar(findNavController()) },
                     modifier = Modifier.fillMaxHeight(),
                 ) {
-
                     val centers = viewModel.centers.value
                     val query = viewModel.query.value
                     val isSearchEnabled = viewModel.isSearchEnabled.value
@@ -126,6 +127,7 @@ class CenterListFragment : Fragment() {
         }
     }
 
+
     @Composable
     fun BottomListView(centers: List<Center>) {
         if (centers.isNotEmpty()) {
@@ -144,7 +146,9 @@ class CenterListFragment : Fragment() {
                         center = center,
                         onClick = {
                             viewModel.setCurrentIndex(index)
+
                             findNavController().navigate(R.id.viewCenter)
+
                         }
                     )
                 }

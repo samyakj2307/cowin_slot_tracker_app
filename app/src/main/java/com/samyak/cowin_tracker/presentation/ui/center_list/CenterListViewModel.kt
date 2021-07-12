@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samyak.cowin_tracker.domain.model.Center
-import com.samyak.cowin_tracker.repository.CenterRepository
+import com.samyak.cowin_tracker.repository.searchRepository.CenterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Double.parseDouble

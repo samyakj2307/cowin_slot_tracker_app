@@ -1,4 +1,4 @@
-package com.samyak.cowin_tracker.repository
+package com.samyak.cowin_tracker.repository.searchRepository
 
 import com.samyak.cowin_tracker.domain.model.Center
 
