@@ -3,6 +3,7 @@ package com.samyak.cowin_tracker.di
 import com.google.gson.GsonBuilder
 import com.samyak.cowin_tracker.network.CenterService
 import com.samyak.cowin_tracker.network.model.CenterDtoMapper
+import com.samyak.cowin_tracker.network.model.PincodeDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +19,19 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideCenterMapper():CenterDtoMapper{
+    fun provideCenterMapper(): CenterDtoMapper {
         return CenterDtoMapper()
     }
 
     @Singleton
     @Provides
-    fun provideCenterService():CenterService{
+    fun providePincodeMapper(): PincodeDtoMapper {
+        return PincodeDtoMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCenterService(): CenterService {
         return Retrofit.Builder()
             .baseUrl("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))

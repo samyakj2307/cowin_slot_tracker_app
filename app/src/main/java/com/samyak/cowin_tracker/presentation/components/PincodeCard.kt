@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun PincodeCard(pincode: String, slot_tracking: String) {
@@ -33,7 +35,7 @@ fun PincodeCard(pincode: String, slot_tracking: String) {
                 modifier = Modifier
                     .wrapContentHeight(Alignment.CenterVertically)
                     .wrapContentWidth(Alignment.Start)
-                    .padding(26.dp)
+                    .padding(28.dp)
             )
             Text(
                 text = slot_tracking,
@@ -42,9 +44,21 @@ fun PincodeCard(pincode: String, slot_tracking: String) {
                     .wrapContentWidth(Alignment.End)
                     .wrapContentHeight(Alignment.CenterVertically)
                     .padding(20.dp)
-                    .background(color = Color.Blue, shape = CircleShape)
-                    .padding(6.dp),
-                color = Color.White
+                    .background(
+                        color = if (slot_tracking == "45+") {
+                            Color(android.graphics.Color.parseColor("#970897"))
+                        } else {
+                            Color.Blue
+                        },
+                        shape = CircleShape
+                    )
+                    .padding(8.dp),
+                color = Color.White,
+                style = androidx.compose.ui.text.TextStyle(
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
             )
         }
     }

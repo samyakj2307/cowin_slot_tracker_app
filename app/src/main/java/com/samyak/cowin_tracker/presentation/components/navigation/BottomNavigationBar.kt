@@ -30,9 +30,6 @@ fun BottomNavigationBar(navController: NavController) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.label
 
-        Log.d(TAG, "BottomNavigationBar: ${navController.graph.startDestDisplayName}")
-        Log.d(TAG, "BottomNavigationBar: ${navController.currentDestination?.displayName}")
-
 
         val isAtSearch = mutableStateOf(true)
 

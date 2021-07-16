@@ -1,111 +1,94 @@
 package com.samyak.cowin_tracker.presentation.ui.pincode_list
 
-import android.app.Activity.RESULT_OK
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FirebaseAuth
-import com.samyak.cowin_tracker.TAG
-import com.samyak.cowin_tracker.repository.trackRepository.PincodeRepository_Impl
+import androidx.navigation.findNavController
+import com.samyak.cowin_tracker.R
+import com.samyak.cowin_tracker.presentation.components.PincodeCard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PincodeListFragment : Fragment() {
 
     private val viewModel: PincodeViewModel by activityViewModels()
 
-    private val signInLauncher = registerForActivityResult(
-        FirebaseAuthUIActivityResultContract()
-    ) { res ->
-        this.onSignInResult(res)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(TAG, "onCreateView: ${viewModel.userId.value}")
-        if (viewModel.firebaseAuth.currentUser == null) {
-            Log.d(TAG, "onCreateView: Inside if else")
-            createSignInIntent()
-        } else {
-            Log.d(TAG, "onCreateView: ${viewModel.firebaseAuth.currentUser.uid}")
-        }
 
         return ComposeView(requireContext()).apply {
             setContent {
-                Scaffold {
-                    Column(modifier = Modifier.padding(bottom = it.calculateBottomPadding())) {
-                        Text(text = "Hello in Pincode Fragment")
+                Scaffold(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                    floatingActionButtonPosition = FabPosition.End,
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = { findNavController().navigate(R.id.addPincode) },
+                            shape = CircleShape,
+                            backgroundColor = Color(android.graphics.Color.parseColor("#002060")),
+                            contentColor = Color.White
+                        ) { Icon(Icons.Filled.Add, "Add Pincode") }
                     }
+                ) {
+                    Column {
+                        Text(
+                            text = "Tracking Pincodes",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentWidth(Alignment.CenterHorizontally)
+                                .wrapContentHeight(Alignment.CenterVertically)
+                                .padding(15.dp),
+                            style = TextStyle(
+                                color = Color(android.graphics.Color.parseColor("#002060")),
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        )
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                                .background(color = Color.Black)
+                        )
+                        Column(modifier = Modifier.padding(bottom = it.calculateBottomPadding())) {
+                            PincodeListView()
+                        }
+                    }
+
                 }
             }
         }
     }
 
-    private fun createSignInIntent() {
-        Log.d(TAG, "createSignInIntent: Reached Inside")
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IN").build(),
-            AuthUI.IdpConfig.GoogleBuilder().build(),
-        )
-
-        Log.d(TAG, "createSignInIntent: Reached Providers")
-
-        val signInIntent = AuthUI.getInstance()
-            .createSignInIntentBuilder()
-            .setIsSmartLockEnabled(false)
-            .setAvailableProviders(providers)
-            .build()
-        signInLauncher.launch(signInIntent)
-    }
-
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
-        if (result.resultCode == RESULT_OK) {
-            // Successfully signed in
-            Log.d(TAG, "onSignInResult: Hello")
-            val user = FirebaseAuth.getInstance().currentUser
-            user?.uid?.let { viewModel.setUserId(it) }
-            CoroutineScope(IO).launch {
-                PincodeRepository_Impl().getPincodes(viewModel.userId.value)
+    @Composable
+    fun PincodeListView() {
+        LazyColumn {
+            itemsIndexed(items = viewModel.pincodes.value) { item, value ->
+                PincodeCard(pincode = value.pincode, slot_tracking = value.slot_tracking)
             }
-        } else {
-            Toast.makeText(context, "Signin Failed", Toast.LENGTH_SHORT).show()
-
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
-        }
-    }
-
-    private fun signOut() {
-        context?.let {
-            AuthUI.getInstance()
-                .signOut(it)
-                .addOnCompleteListener {
-
-                }
         }
     }
 

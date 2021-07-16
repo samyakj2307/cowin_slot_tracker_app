@@ -28,5 +28,17 @@
     <fragment
         android:id="@+id/pincodeListFragment"
         android:name="com.samyak.cowin_tracker.presentation.ui.pincode_list.PincodeListFragment"
-        android:label="PincodeListFragment" />
+        android:label="PincodeListFragment">
+        <action
+            android:id="@+id/addPincode"
+            app:destination="@id/addPincodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPincodeFragment"
+        android:name="com.samyak.cowin_tracker.presentation.ui.add_pincode.AddPincodeFragment"
+        android:label="AddPincodeFragment" >
+        <action
+            android:id="@+id/viewAllPincodes"
+            app:destination="@id/pincodeListFragment" />
+    </fragment>
 </navigation>

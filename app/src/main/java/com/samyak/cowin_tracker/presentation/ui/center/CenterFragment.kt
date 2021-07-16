@@ -40,11 +40,6 @@ class CenterFragment : Fragment() {
 
     private val viewModel: CenterListViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreateCenterFragment: $viewModel")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

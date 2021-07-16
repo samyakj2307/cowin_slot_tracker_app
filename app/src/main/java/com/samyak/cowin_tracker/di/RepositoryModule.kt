@@ -22,5 +22,11 @@ object RepositoryModule {
     ): CenterRepository {
         return CenterRepositoryImpl(centerService, centerDtoMapper)
     }
+//
+//    @Singleton
+//    @Provides
+//    fun providePincodeRepository(): PincodeRepository {
+//        return PincodeRepository_Impl()
+//    }
 
 }

@@ -35,7 +35,7 @@ import com.samyak.cowin_tracker.domain.model.Session
 @Composable
 fun SessionCard(
     session: Session,
-    price:String
+    price: String
 ) {
     // TODO Change this to {false}
     val isExpanded = remember { mutableStateOf(false) }
@@ -45,6 +45,11 @@ fun SessionCard(
         modifier = Modifier
             .padding(top = 4.dp, bottom = 4.dp)
             .fillMaxWidth()
+            .clickable(onClick = {
+                if (!isExpanded.value) {
+                    isExpanded.value = !isExpanded.value
+                }
+            })
             .animateContentSize(),
         elevation = 8.dp,
         border = BorderStroke(1.dp, Color.LightGray)
@@ -158,7 +163,7 @@ fun SessionCard(
                             style = TextStyle(fontWeight = FontWeight.Medium)
                         )
                     }
-                    if (price!="0") {
+                    if (price != "0") {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -178,6 +183,7 @@ fun SessionCard(
                         if (available_capacity > 0) {
                             BookNowButton()
                         }
+
                     }
 
                 }
@@ -186,7 +192,9 @@ fun SessionCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = { isExpanded.value = !isExpanded.value })
+                    .clickable(onClick = {
+                        isExpanded.value = !isExpanded.value
+                    })
                     .padding(top = 10.dp, bottom = 10.dp),
             ) {
                 val imageVectorArrow = if (isExpanded.value) {
@@ -202,8 +210,6 @@ fun SessionCard(
                     contentDescription = "DropDown"
                 )
             }
-
-
         }
     }
 }
