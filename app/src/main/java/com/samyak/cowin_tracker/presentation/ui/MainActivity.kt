@@ -13,14 +13,15 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.samyak.cowin_tracker.R
 import com.samyak.cowin_tracker.TAG
+import com.samyak.cowin_tracker.domain.model.Center
 import com.samyak.cowin_tracker.presentation.components.navigation.BottomNavigationBar
+import com.samyak.cowin_tracker.presentation.ui.center_list.CenterListViewModel
 import com.samyak.cowin_tracker.presentation.ui.pincode_list.PincodeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var firebaseMessagingAccessToken: String
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var authStateListener: FirebaseAuth.AuthStateListener
 
@@ -31,7 +32,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private val viewModel: PincodeViewModel by viewModels()
+    private val pincodeViewModel: PincodeViewModel by viewModels()
+
+    private val centerListViewModel: CenterListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,23 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth.addAuthStateListener(authStateListener)
     }
 
+    override fun onResume() {
+        super.onResume()
+//        if (intent.extras != null) {
+//            Log.d(TAG, "onResume: ${intent.extras!!.get("available_capacity")}")
+//            Log.d(TAG, "onResume: ${intent.extras!!.get("slot_type")}")
+//            Log.d(TAG, "onResume: ${intent.extras!!.get("date")}")
+//            Log.d(TAG, "onResume: ${intent.extras!!.get("session_id")}")
+//            Log.d(TAG, "onResume: ${intent.extras!!.get("center_id")}")
+//
+//            val pincode: String = intent.extras!!.get("pincode") as String
+//            centerListViewModel.newSearch(pincode)
+//            Log.d(TAG, "onResume: ${centerListViewModel.centers}")
+//            Log.d(TAG, "onResume: ${centerListViewModel.centers.value.indexOf(Center(center_id = intent.extras!!.get("center_id") as Int?))}")
+//            findNavController(R.id.notificationIntent)
+//        }
+    }
+
     override fun onStop() {
         super.onStop()
         firebaseAuth.removeAuthStateListener(authStateListener)
@@ -95,30 +115,16 @@ class MainActivity : AppCompatActivity() {
             user?.uid?.let { onSignedInInitialize(it) }
         } else {
             Toast.makeText(this, "Signin Failed", Toast.LENGTH_SHORT).show()
-
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
         }
     }
 
     private fun onSignedInInitialize(userId: String) {
-        viewModel.setUserId(userId = userId)
+        pincodeViewModel.setUserId(userId = userId)
         Log.d(TAG, "onCreate: $userId")
-//          TODO set up Firebase Messaging
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//            firebaseMessagingAccessToken = task.result
-//        })
     }
 
     private fun onSignedOutCleanup() {
-        viewModel.setUserId("")
-        firebaseMessagingAccessToken = ""
+        pincodeViewModel.setUserId("")
     }
 
     private fun signOut() {

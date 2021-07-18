@@ -12,6 +12,10 @@
         android:id="@+id/track"
         app:destination="@+id/pincodeListFragment" />
 
+    <action
+        android:id="@+id/notificationIntent"
+        app:destination="@+id/centerFragment"/>
+
     <fragment
         android:id="@+id/centerListFragment"
         android:name="com.samyak.cowin_tracker.presentation.ui.center_list.CenterListFragment"

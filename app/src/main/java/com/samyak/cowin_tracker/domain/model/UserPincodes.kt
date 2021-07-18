@@ -5,6 +5,7 @@ data class UserPincodes(
 )
 
 data class Pincode(
-    val pincode:String,
-    val slot_tracking:String
+    val pincode: String,
+    val slot_tracking: String,
+    val fee_type: String
 )

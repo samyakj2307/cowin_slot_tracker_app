@@ -156,17 +156,8 @@ class AddPincodeFragment : Fragment() {
 
                                         val newPincode = Pincode(
                                             pincode = viewModel.pincodeString,
-                                            slot_tracking = when (viewModel.ageGroupSelected.value) {
-                                                "18+" -> {
-                                                    "is_18_plus"
-                                                }
-                                                "45+" -> {
-                                                    "is_45_plus"
-                                                }
-                                                else -> {
-                                                    "is_all"
-                                                }
-                                            }
+                                            slot_tracking = viewModel.ageGroupSelected.value,
+                                            fee_type = viewModel.feeTypeSelected.value
                                         )
 
                                         //Adding New Pincode to Firebase
@@ -174,15 +165,9 @@ class AddPincodeFragment : Fragment() {
                                             newPincode,
                                             pincodeViewModel.userId.value
                                         )
-                                        //Updating Pincode List Fragment List
-                                        pincodeViewModel.pincodes.value.add(
-                                            Pincode(
-                                                viewModel.pincodeString,
-                                                viewModel.ageGroupSelected.value
-                                            )
-                                        )
+
                                         findNavController().navigate(R.id.viewAllPincodes)
-                                        //TODO This After Saving to Realtime Database
+
                                         viewModel.isSaveEnabled = false
                                         viewModel.pincodeString = ""
                                         viewModel.ageGroupSelected.value = ""
