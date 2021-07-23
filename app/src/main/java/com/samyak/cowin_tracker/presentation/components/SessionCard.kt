@@ -36,7 +36,7 @@ fun SessionCard(
     session: Session,
     price: String
 ) {
-    // TODO Change this to {false}
+    // this is supposed to be {false}
     val isExpanded = remember { mutableStateOf(false) }
 
     Card(

@@ -1,6 +1,5 @@
 package com.samyak.cowin_tracker.presentation.components.navigation
 
-import android.util.Log
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -41,8 +40,7 @@ fun BottomNavigationBar(navController: NavController) {
                 alwaysShowLabel = true,
                 selected = currentRoute == item.routeLabel,
                 onClick = {
-                    //TODO this
-                    navController.popBackStack(navController.graph.startDestinationId,false)
+                    navController.popBackStack(navController.graph.startDestinationId, false)
 
                     isAtSearch.value = item.title == "Search"
                     navController.currentDestination?.let {

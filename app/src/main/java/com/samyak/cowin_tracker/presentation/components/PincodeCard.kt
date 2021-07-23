@@ -121,9 +121,7 @@ fun DeletePincodeAlertBox(isOpen: MutableState<Boolean>, removePincode: () -> Un
             Button(
                 onClick = {
                     isOpen.value = false
-                    // TODO Remove Pincode from Database
                     removePincode()
-
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.Red,
