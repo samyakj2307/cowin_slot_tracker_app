@@ -219,10 +219,10 @@ class CenterListFragment : Fragment() {
             ) {
                 CircularProgressIndicator(
                     color = Color.Blue,
-                    strokeWidth = 6.dp,
+                    strokeWidth = 4.dp,
                     modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp)
+                        .width(60.dp)
+                        .height(60.dp)
                 )
             }
         }
