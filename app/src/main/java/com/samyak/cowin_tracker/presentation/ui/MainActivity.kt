@@ -1,7 +1,6 @@
 package com.samyak.cowin_tracker.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,18 +11,20 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.samyak.cowin_tracker.R
-import com.samyak.cowin_tracker.TAG
-import com.samyak.cowin_tracker.domain.model.Center
 import com.samyak.cowin_tracker.presentation.components.navigation.BottomNavigationBar
 import com.samyak.cowin_tracker.presentation.ui.center_list.CenterListViewModel
 import com.samyak.cowin_tracker.presentation.ui.pincode_list.PincodeViewModel
+import com.samyak.cowin_tracker.presentation.util.ConnectionLiveData
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Integer.parseInt
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var authStateListener: FirebaseAuth.AuthStateListener
+
+    lateinit var connectionLiveData: ConnectionLiveData
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -38,23 +39,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        connectionLiveData = ConnectionLiveData(this)
+
+
         setContentView(R.layout.activity_main)
         firebaseAuth = FirebaseAuth.getInstance()
 
-//        signOut()
+
 
         authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val firebaseUser = firebaseAuth.currentUser
             if (firebaseUser != null) {
-                Log.d(TAG, "onCreate: ${firebaseUser.uid}")
 
                 onSignedInInitialize(firebaseUser.uid)
             } else {
-                Log.d(TAG, "onCreate: ")
                 onSignedOutCleanup()
                 createSignInIntent()
             }
         }
+
+        connectionLiveData.observe(this, { isNetworkAvailable ->
+            centerListViewModel.isNetworkAvailable.value = isNetworkAvailable
+        })
 
         val bottomNavigationView = findViewById<ComposeView>(R.id.bottom_navigation_view)
 
@@ -66,25 +73,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart: ")
         firebaseAuth.addAuthStateListener(authStateListener)
     }
 
     override fun onResume() {
         super.onResume()
-//        if (intent.extras != null) {
-//            Log.d(TAG, "onResume: ${intent.extras!!.get("available_capacity")}")
-//            Log.d(TAG, "onResume: ${intent.extras!!.get("slot_type")}")
-//            Log.d(TAG, "onResume: ${intent.extras!!.get("date")}")
-//            Log.d(TAG, "onResume: ${intent.extras!!.get("session_id")}")
-//            Log.d(TAG, "onResume: ${intent.extras!!.get("center_id")}")
-//
-//            val pincode: String = intent.extras!!.get("pincode") as String
-//            centerListViewModel.newSearch(pincode)
-//            Log.d(TAG, "onResume: ${centerListViewModel.centers}")
-//            Log.d(TAG, "onResume: ${centerListViewModel.centers.value.indexOf(Center(center_id = intent.extras!!.get("center_id") as Int?))}")
-//            findNavController(R.id.notificationIntent)
-//        }
+        if (intent.extras != null) {
+            val pincode: String = intent.extras!!.get("pincode") as String
+            val center_id = intent.extras!!.get("center_id") as String
+
+
+            centerListViewModel.query.value = pincode
+            if (centerListViewModel.isNetworkAvailable.value) {
+                centerListViewModel.newSearchForNotification(pincode, parseInt(center_id))
+            }
+
+            centerListViewModel.isNotificationSearchDone.observe(this, { value ->
+                if (value == true) {
+                    findNavController(R.id.main_nav_host_fragment).navigate(R.id.notificationIntent)
+                }
+            }
+            )
+        }
     }
 
     override fun onStop() {
@@ -120,21 +130,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSignedInInitialize(userId: String) {
         pincodeViewModel.setUserId(userId = userId)
-        Log.d(TAG, "onCreate: $userId")
     }
 
     private fun onSignedOutCleanup() {
         pincodeViewModel.setUserId("")
+        pincodeViewModel.pincodes.value = mutableListOf()
+        centerListViewModel.centers.value = listOf()
     }
 
-    private fun signOut() {
-        this.let {
-            AuthUI.getInstance()
-                .signOut(it)
-                .addOnCompleteListener {
-                    onSignedOutCleanup()
-                }
-        }
-    }
+//    private fun signOut() {
+//        this.let {
+//            AuthUI.getInstance()
+//                .signOut(it)
+//                .addOnCompleteListener {
+//                    onSignedOutCleanup()
+//                }
+//        }
+//    }
 
 }

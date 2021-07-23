@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.samyak.cowin_tracker.domain.model.Center
@@ -43,6 +42,7 @@ fun CenterCard(
                     Text(
                         text = name,
                         modifier = Modifier
+                            .fillMaxWidth(0.7f)
                             .wrapContentWidth(Alignment.Start),
                         style = TextStyle(
                             color = Color(android.graphics.Color.parseColor("#002060")),
@@ -52,11 +52,10 @@ fun CenterCard(
                         )
                     )
                     center.fee_type?.let { fee_type ->
-                        val colorString:String
-                        if (fee_type == "Paid") {
-                            colorString = "#000080"
-                        }else{
-                            colorString = "#006400"
+                        val colorString: String = if (fee_type == "Paid") {
+                            "#000080"
+                        } else {
+                            "#006400"
                         }
                         Text(
                             text = fee_type,
@@ -120,25 +119,4 @@ fun CenterCard(
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun CenterCardPreview() {
-    return CenterCard(
-        center = Center(
-            name = "Child Care Hospital",
-            address = "E-103 104 Bakhtawar Ram Nagar Indore",
-            state_name = "Madhya Pradesh",
-            district_name = "Indore",
-            block_name = "INDORE",
-            pincode = 452001,
-            latitude = 22.0,
-            longitude = 75.0,
-            from = "09:00:00",
-            to = "18:00:00",
-            fee_type = "Paid",
-        ),
-        onClick = {})
 }

@@ -1,7 +1,6 @@
 package com.samyak.cowin_tracker.presentation.ui.center
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import com.samyak.cowin_tracker.TAG
 import com.samyak.cowin_tracker.domain.model.Center
 import com.samyak.cowin_tracker.domain.model.Session
-import com.samyak.cowin_tracker.presentation.components.navigation.BottomNavigationBar
 import com.samyak.cowin_tracker.presentation.components.SessionCard
 import com.samyak.cowin_tracker.presentation.ui.center_list.CenterListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,9 +43,7 @@ class CenterFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                Scaffold(
-//                    bottomBar = { BottomNavigationBar(findNavController()) }
-                ) {
+                Scaffold {
                     val currentCenter = viewModel.getCurrentCenter()
                     val sessions = currentCenter.sessions
 
@@ -215,25 +209,5 @@ class CenterFragment : Fragment() {
                 )
             }
         }
-    }
-
-    @Preview
-    @Composable
-    fun CenterFragmentPreview() {
-        return CenterInfoSection(
-            center = Center(
-                name = "Child Care Hospital",
-                address = "E-103 104 Bakhtawar Ram Nagar Indore",
-                state_name = "Madhya Pradesh",
-                district_name = "Indore",
-                block_name = "INDORE",
-                pincode = 452001,
-                latitude = 22.0,
-                longitude = 75.0,
-                from = "09:00:00",
-                to = "18:00:00",
-                fee_type = "Paid",
-            )
-        )
     }
 }

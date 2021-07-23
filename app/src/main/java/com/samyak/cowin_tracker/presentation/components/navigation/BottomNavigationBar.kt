@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.samyak.cowin_tracker.TAG
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {

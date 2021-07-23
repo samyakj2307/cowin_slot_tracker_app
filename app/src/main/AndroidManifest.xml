@@ -3,6 +3,7 @@
     package="com.samyak.cowin_tracker">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.samyak.cowin_tracker.presentation.ui.BaseApplication"

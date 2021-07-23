@@ -25,6 +25,8 @@ class PincodeViewModel
 
     private val firebaseDatabase: FirebaseDatabase = Firebase.database
     private val usersDatabaseRef = firebaseDatabase.reference.child("users_2_0")
+    private val trackUserPincodeDatabaseRef =
+        firebaseDatabase.reference.child("Track_Pin_Codes_2_0")
 
     lateinit var userPincodesDatabaseListener: ValueEventListener
 
@@ -41,21 +43,22 @@ class PincodeViewModel
         }
     }
 
-    fun initDatabaseListener() {
+    private fun initDatabaseListener() {
         val userPincodesDatabaseListener = usersDatabaseRef
             .child(userId.value)
             .child("Pincodes").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d(TAG, "onDataChange: ${snapshot.value}")
                     if (snapshot.value != null) {
                         pincodes.value = pincodeDtoMapper
                             .mapToDomainModel(snapshot.value as HashMap<String, HashMap<String, String>>)
                             .pincodes
+                    } else {
+                        pincodes.value = mutableListOf()
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    Log.d(TAG, "onCancelled: $error")
                 }
             })
         usersDatabaseRef
@@ -67,6 +70,86 @@ class PincodeViewModel
         usersDatabaseRef
             .child(userId.value)
             .child("Pincodes").removeEventListener(userPincodesDatabaseListener)
+    }
+
+
+    fun removePincode(pincode: Pincode) {
+        usersDatabaseRef
+            .child(userId.value)
+            .child("Pincodes")
+            .child(pincode.pincode)
+            .removeValue()
+            .addOnSuccessListener {
+
+                if (pincode.fee_type == "Both") {
+                    if (pincode.slot_tracking == "All") {
+                        removeValueFromDatabase(
+                            feeType = "Free",
+                            slotType = "18+",
+                            pincode = pincode.pincode
+                        )
+                        removeValueFromDatabase(
+                            feeType = "Free",
+                            slotType = "45+",
+                            pincode = pincode.pincode
+                        )
+                        removeValueFromDatabase(
+                            feeType = "Paid",
+                            slotType = "18+",
+                            pincode = pincode.pincode
+                        )
+                        removeValueFromDatabase(
+                            feeType = "Paid",
+                            slotType = "45+",
+                            pincode = pincode.pincode
+                        )
+                    } else {
+                        removeValueFromDatabase(
+                            feeType = "Free",
+                            slotType = pincode.slot_tracking,
+                            pincode = pincode.pincode
+                        )
+                        removeValueFromDatabase(
+                            feeType = "Paid",
+                            slotType = pincode.slot_tracking,
+                            pincode = pincode.pincode
+                        )
+                    }
+                } else {
+                    if (pincode.slot_tracking == "All") {
+
+                        removeValueFromDatabase(
+                            feeType = pincode.fee_type,
+                            slotType = "18+",
+                            pincode = pincode.pincode
+                        )
+                        removeValueFromDatabase(
+                            feeType = pincode.fee_type,
+                            slotType = "18+",
+                            pincode = pincode.pincode
+                        )
+                    } else {
+                        removeValueFromDatabase(
+                            feeType = pincode.fee_type,
+                            slotType = pincode.slot_tracking,
+                            pincode = pincode.pincode
+                        )
+                    }
+                }
+            }
+    }
+
+    private fun removeValueFromDatabase(
+        feeType: String,
+        slotType: String,
+        pincode: String
+    ) {
+        trackUserPincodeDatabaseRef
+            .child(pincode)
+            .child(feeType)
+            .child(pincodeDtoMapper.mapFromDomainPincodeSlotTracking(slot_tracking = slotType))
+            .child(userId.value)
+            .removeValue()
     }
 
 }

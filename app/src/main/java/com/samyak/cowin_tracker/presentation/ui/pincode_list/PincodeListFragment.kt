@@ -18,13 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.samyak.cowin_tracker.R
+import com.samyak.cowin_tracker.domain.model.Pincode
 import com.samyak.cowin_tracker.presentation.components.PincodeCard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,7 +77,7 @@ class PincodeListFragment : Fragment() {
                                 .background(color = Color.Black)
                         )
                         Column(modifier = Modifier.padding(bottom = it.calculateBottomPadding())) {
-                            PincodeListView()
+                            PincodeListView(viewModel.pincodes.value)
                         }
                     }
 
@@ -84,10 +87,29 @@ class PincodeListFragment : Fragment() {
     }
 
     @Composable
-    fun PincodeListView() {
-        LazyColumn {
-            itemsIndexed(items = viewModel.pincodes.value) { item, value ->
-                PincodeCard(pincode = value.pincode, slot_tracking = value.slot_tracking)
+    fun PincodeListView(pincodes: MutableList<Pincode>) {
+        if (pincodes.isNotEmpty()) {
+            LazyColumn {
+                itemsIndexed(items = pincodes) { index, value ->
+                    PincodeCard(pincode = value.pincode, slot_tracking = value.slot_tracking,fee_type = value.fee_type,removePincode = { viewModel.removePincode(value) })
+                }
+            }
+        }else{
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "No Pincode Added to Track.\nTap on the + Button to Add",
+                    style = TextStyle(
+                        color = Color.Gray,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Justify,
+                    )
+                )
             }
         }
     }

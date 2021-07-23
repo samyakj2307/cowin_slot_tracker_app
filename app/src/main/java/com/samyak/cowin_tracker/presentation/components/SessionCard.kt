@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.samyak.cowin_tracker.domain.model.Session
@@ -232,28 +231,4 @@ fun BookNowButton() {
             text = "Book Slot Now",
         )
     }
-}
-
-
-@Preview
-@Composable
-fun SessionCardPreview() {
-    return SessionCard(
-        session = Session(
-            date = "12-07-2021",
-            available_capacity = 79,
-            min_age_limit = 18,
-            max_age_limit = 45,
-            vaccine = "COVISHIELD",
-            slots = listOf(
-                "10:00AM-11:00AM",
-                "11:00AM-12:00PM",
-                "12:00PM-01:00PM",
-                "01:00PM-04:00PM"
-            ),
-            available_capacity_dose1 = 37,
-            available_capacity_dose2 = 42,
-        ),
-        price = "780"
-    )
 }
