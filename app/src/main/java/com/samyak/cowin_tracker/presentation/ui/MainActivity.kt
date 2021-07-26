@@ -17,6 +17,7 @@ import com.samyak.cowin_tracker.presentation.ui.pincode_list.PincodeViewModel
 import com.samyak.cowin_tracker.presentation.util.ConnectionLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Integer.parseInt
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -24,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var authStateListener: FirebaseAuth.AuthStateListener
 
-    lateinit var connectionLiveData: ConnectionLiveData
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        connectionLiveData = ConnectionLiveData(this)
 
 
         setContentView(R.layout.activity_main)
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        connectionLiveData.observe(this, { isNetworkAvailable ->
+        centerListViewModel.connectionLiveData.observe(this, { isNetworkAvailable ->
             centerListViewModel.isNetworkAvailable.value = isNetworkAvailable
         })
 
@@ -80,12 +78,11 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (intent.extras != null) {
             val pincode: String = intent.extras!!.get("pincode") as String
-            val center_id = intent.extras!!.get("center_id") as String
+            val centerId = intent.extras!!.get("center_id") as String
 
 
-            centerListViewModel.query.value = pincode
             if (centerListViewModel.isNetworkAvailable.value) {
-                centerListViewModel.newSearchForNotification(pincode, parseInt(center_id))
+                centerListViewModel.newSearchForNotification(pincode, parseInt(centerId))
             }
 
             centerListViewModel.isNotificationSearchDone.observe(this, { value ->
@@ -118,13 +115,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
+//        val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
             // Successfully signed in
             val user = FirebaseAuth.getInstance().currentUser
             user?.uid?.let { onSignedInInitialize(it) }
         } else {
-            Toast.makeText(this, "Signin Failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "SignIn Failed", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samyak.cowin_tracker.TAG
 import com.samyak.cowin_tracker.domain.model.Center
+import com.samyak.cowin_tracker.presentation.util.ConnectionLiveData
 import com.samyak.cowin_tracker.repository.searchRepository.CenterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class CenterListViewModel
 @Inject
 constructor(
-    private val repository: CenterRepository
+    private val repository: CenterRepository,
+    val connectionLiveData: ConnectionLiveData
 ) : ViewModel() {
 
     val centers: MutableState<List<Center>> = mutableStateOf(listOf())
