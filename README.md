@@ -7,6 +7,8 @@
 * The App is built with Jetpack Compose,Hilt and a Clean App Architecture(MVVM)
 * For notifications, A Django backend is used with Celery-Beat Scheduler which schedules the tasks for searching the Pincode every 5 Minutes. If the Slot is Available it uses Firebase Cloud Messaging Service to send the message to the particular user which has subscribed to that Pincode.
 
+[Backend Repository Link](https://github.com/samyakj2307/cowin-slot-tracker-backend)
+
 # Demo Screenshots
 
 <br/>
