@@ -13,42 +13,44 @@
 
 ## Home Screen
 
-![Home Screen](./demoImages/2.jpg?raw=true "Home Screen")
+<img src="./demoImages/2.jpg" width="324" height="720" alt="Home Screen">
 
 <br/>
 
 ## Search Pincode
 
-![Search Pincode](./demoImages/3.jpg?raw=true "Search Pincodes")
+<img src="./demoImages/3.jpg" width="324" height="720" alt="Search Pincodes">
 
 <br/>
 
 ## Center Information
 
-![Center Information](./demoImages/4.jpg?raw=true "Center Information")
+<img src="./demoImages/4.jpg" width="324" height="720" alt="Center Information">
 
 <br/>
 
-![Center Information](./demoImages/5.jpg?raw=true "Center Information")
+<img src="./demoImages/5.jpg" width="324" height="720" alt="Center Information">
 
 <br/>
 
 ## Track Pincode Screen
 
-![Track Pincode](./demoImages/6.jpg?raw=true "Track Pincode")
+<img src="./demoImages/6.jpg" width="324" height="720" alt="Track Pincode">
 <br/>
 
 ### Add Pincode for Tracking
 
-![Add Pincode for Tracking](./demoImages/7.jpg?raw=true "Add Pincode for Tracking")
+<img src="./demoImages/7.jpg" width="324" height="720" alt="Add Pincode for Tracking">
 <br/>
-![Add Pincode for Tracking](./demoImages/8.jpg?raw=true "Add Pincode for Tracking")
+<img src="./demoImages/8.jpg" width="324" height="720" alt="Add Pincode for Tracking">
 <br/>
-![Add Pincode for Tracking](./demoImages/9.jpg?raw=true "Add Pincode for Tracking")
+<img src="./demoImages/9.jpg" width="324" height="720" alt="Add Pincode for Tracking">
+<br/>
+
 
 ### Get Notifications
 
-![Get Notifications](./demoImages/10.jpeg?raw=true "Get Notifications")
+<img src="./demoImages/10.jpeg" width="324" height="720" alt="Get Notifications">
 <br/>
 
 
