@@ -38,7 +38,7 @@
 <img src="./demoImages/6.jpg" width="324" height="720" alt="Track Pincode">
 <br/>
 
-### Add Pincode for Tracking
+## Add Pincode for Tracking
 
 <img src="./demoImages/7.jpg" width="324" height="720" alt="Add Pincode for Tracking">
 <br/>
@@ -48,7 +48,7 @@
 <br/>
 
 
-### Get Notifications
+## Get Notifications
 
 <img src="./demoImages/10.jpeg" width="324" height="720" alt="Get Notifications">
 <br/>
